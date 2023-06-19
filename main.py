@@ -1,7 +1,9 @@
 import pygame
 import sys
+from tkinter import messagebox
 from juego import Juego
 from ia import minimax
+import sys
 grid = []
 
 pygame.init()
@@ -16,10 +18,21 @@ box_height = v_height // filas
 window = pygame.display.set_mode((v_width, v_height))
 
 
+dificultad_actual = int(sys.argv[1])
+dificultad=0
+
+if dificultad_actual == 0:
+    dificultad = 1
+elif dificultad_actual == 1:
+    dificultad = 2
+elif dificultad_actual == 2:
+    dificultad = 3
+else:
+    dificultad = 2
+
 def main():
 
     juego = Juego(window)
-    dificultad = 0
     play = True
 
     while play:
@@ -29,9 +42,10 @@ def main():
             juego.ai_move(tablero)
             print(dificultad)
 
-        if juego.ganar() != None:
-            print("Ganador Fichas Color :" + juego.ganar())
-            
+        ganador = juego.ganar()
+        if ganador is not None:
+            messagebox.showinfo("Ganador", "El ganador es " + ganador)
+            break
 
         for event in pygame.event.get():
 
@@ -49,14 +63,6 @@ def main():
                 pygame.quit()
                 sys.exit()
                 
-            elif event.type == pygame.KEYDOWN:
-                if dificultad==0:
-                    if event.key == pygame.K_1:
-                        dificultad = 1
-                    if event.key == pygame.K_2:
-                        dificultad = 2
-                    if event.key == pygame.K_3:
-                        dificultad = 3
 
         window.fill((0, 0, 0))
 
